@@ -1,0 +1,88 @@
+﻿@model EarningModel
+@using System.Globalization
+@{
+    ViewData["Title"] = "Earning";
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Branch</th>
+            <th>Month</th>
+            <th>Minimum</th>
+            <th>Redaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Earning earning in Model.Earnings)
+        {
+            <tr>
+                <td>@earning.Branch.Name</td>
+                <td>@DateTimeFormatInfo.CurrentInfo.GetMonthName(earning.Month)</td>
+                <td>@earning.Year</td>
+                <td>@earning.EarnCost</td>
+                <td>
+                    <a asp-action="EditGrade" asp-controller="Admin" asp-route-id="@earning.Id">Edit</a> / <a asp-action="DeleteGrade" asp-controller="Admin" asp-route-id="@earning.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td><a href="javascript:void(0);" class="btn btn-info grade" data-toggle="modal" data-target="#GradeModal"><i class="fas fa-plus-circle"></i>Add New Earning</a></td>
+        </tr>
+    </tbody>
+</table>
+<div class="modal fade" id="GradeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Earning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Grade">
+                    <div class="form-group">
+                        <label class="control-label">Select Branch*</label>
+                        <select asp-for="BranchId">
+                            @foreach (Branch branch in Model.Branches)
+                            {
+                                <option value="@branch.Id">@branch.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="BranchId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Month" class="control-label">Month*</label>
+                        <select asp-for="Month">
+                            @for (int i = 1; i <= 12; i++)
+                            {
+                                if (i == DateTime.Now.Month)
+                                {
+                                    <option selected value="@i">@DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="Month" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Year" class="control-label">Year*</label>
+                        <input asp-for="Year" class="form-control" value="@DateTime.Now.Year">
+                        <span asp-validation-for="Year" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EarnCost" class="control-label">Earn Cost*</label>
+                        <input asp-for="EarnCost" class="form-control">
+                        <span asp-validation-for="EarnCost" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

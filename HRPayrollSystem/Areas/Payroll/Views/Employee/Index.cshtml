@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+}
+@model RoleModel
+<div class="employees-list" style="overflow-x:auto;">
+    <table class="table table-hover js-basic-example dataTable table-custom table-striped m-b-0 c_list no-footer" id="employees">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    <label class="fancy-checkbox d-none">
+                        <input class="select-all" type="checkbox" name="checkbox">
+                        <span></span>
+                    </label>
+                </th>
+                <th>Picture</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Father Name</th>
+                <th>Birth Date</th>
+                <th>Address</th>
+                <th>Village Register</th>
+                <th>Identity Number</th>
+                <th>Education</th>
+                <th>Family Status</th>
+                <th>Gender</th>
+                <th>Redaction</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Employee Employee in Model.Employees)
+            {
+                <tr>
+                    <td>
+                        <input class="select" id="select" type="radio" name="checkbox" value="@Employee.Id">
+                        <span></span>
+                    </td>
+                    <td><img src="~/Employee/Images/@Employee.PhotoLink" class="rounded-circle avatar" alt="Employee picture"></td>
+                    <td>@Employee.Id</td>
+                    <td>@Employee.Name</td>
+                    <td>@Employee.Surname</td>
+                    <td>@Employee.FatherName</td>
+                    <td>@Employee.BirthDate.ToShortDateString()</td>
+                    <td>@Employee.Address</td>
+                    <td>@Employee.VillageRegister</td>
+                    <td>@Employee.IdentityNumber</td>
+                    <td>@Employee.Education</td>
+                    <td>@Employee.FamilyStatus</td>
+                    <td>@Employee.Gender</td>
+                    <td>
+                        <nav>
+                            <ul>
+                                <li class="nav-item dropdown">
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a href="javascript:void(0);" class="btn btn-info role-modal" data-toggle="modal" data-target="#RoleModal" id="@Employee.Id">Add Role</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Redaction Employee
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            @if (User.IsInRole("Hr"))
+                                            {
+                                                <a class="edit" href="@Url.Action("Edit","Hr",new { id = Employee.Id})">Edit</a>
+                                                <br>
+                                                <a class="delete" asp-action="delete" asp-controller="Hr" asp-route-id="@Employee.Id">Delete</a>
+                                                <br>
+                                                <a class="add_work_place" asp-action="index" asp-controller="Work" asp-route-id="@Employee.Id">Work places list</a>
+                                            }
+                                            else if (User.IsInRole("Department Head"))
+                                            {
+                                                <a class="bonus" asp-action="Bonus" asp-controller="Department" asp-route-id="@Employee.Id">Bonuses</a>
+                                                <br>
+                                                <a class="penalty" asp-action="Penalty" asp-controller="Department" asp-route-id="@Employee.Id">Penalties</a>
+                                                <br>
+                                            }
+                                        </div>
+                                    }
+                                </li>
+                            </ul>
+                        </nav>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="RoleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Index" method="post">
+                    <input hidden asp-for="@Model.EmployeeId" class="employee-id" value="" />
+                    <div class="form-group">
+                        <span class="employee-details"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Role*</label>
+                        <select asp-for="Role">
+                            <option selected></option>
+                            @foreach (IdentityRole Role in Model.Roles)
+                            {
+                                <option value="@Role.Name">@Role.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UserName">User Name*</label>
+                        <input asp-for="UserName" />
+                        <span asp-validation-for="UserName"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email">Email*</label>
+                        <input asp-for="Email" />
+                        <span asp-validation-for="Email"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password">Password*</label>
+                        <input asp-for="Password" />
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@model VacationModel
+@{
+    ViewData["Title"] = "Vacation";
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Redaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Vacation vacation in Model.Vacations)
+        {
+            <tr>
+                <td>@vacation.Employee.Name @vacation.Employee.Surname</td>
+                <td>@vacation.StartTime.ToShortDateString()</td>
+                <td>@vacation.EndTime.ToShortDateString()</td>
+                <td>
+                    <a asp-action="EditVacation" asp-controller="Admin" asp-route-id="@vacation.Id">Edit</a> / <a asp-action="DeleteVacation" asp-controller="Admin" asp-route-id="@vacation.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td><a href="javascript:void(0);" id="@Model.EmployeeId" class="btn btn-info vacation" data-toggle="modal" data-target="#VacationModal"><i class="fas fa-plus-circle"></i>Add New Vacation</a></td>
+        </tr>
+    </tbody>
+</table>
+<div class="modal fade" id="VacationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Vacation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Vacation">
+                    <input asp-for="EmployeeId" hidden value="" class="employee-id" />
+                    <div class="form-group">
+                        <span class="employee-details"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StartTime" class="control-label">From*</label>
+                        <input asp-for="StartTime" type="text" data-provide="datepicker" data-date-autoclose="true" class="datetimepicker form-control" placeholder="From">
+                        <span asp-validation-for="StartTime"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EndTime" class="control-label">To*</label>
+                        <input asp-for="StartTime" type="text" data-provide="datepicker" data-date-autoclose="true" class="datetimepicker form-control" placeholder="To">
+                        <span asp-validation-for="EndTime"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

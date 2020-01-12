@@ -1,0 +1,177 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <title>HR Panel</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="author" content="Mirhabib Dadashov">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/color_skins.css">
+</head>
+<body class="theme-orange">
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <div id="wrapper">
+        <nav class="navbar navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-btn">
+                    <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fas fa-bars"></i></button>
+                </div>
+                <div class="navbar-right">
+                    <form id="navbar-search" class="navbar-form search-form">
+                        <input value="" class="form-control" placeholder="Search here..." type="text" style="visibility:hidden">
+                        <button type="button" class="btn btn-default"><i class="icon-magnifier" style="visibility:hidden"></i></button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <div id="left-sidebar" class="sidebar">
+            <div class="sidebar-scroll">
+                <div class="user-account">
+                    <div class="dropdown">
+                        <span>Welcome,</span>
+                        <a href="javascript:void(0);" class="dropdown-toggle user-name" data-toggle="dropdown"><strong>@ViewBag.UserName</strong></a>
+                        <ul class="dropdown-menu dropdown-menu-right account animated flipInY">
+                            <li><a asp-action="Logout" asp-controller="Account" asp-area="" style="color:#fff!important;"><i class="icon-power"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <hr />
+                <div class="tab-content p-l-0 p-r-0">
+                    <div class="tab-pane animated fadeIn active" id="hr_menu">
+                        <nav class="sidebar-nav">
+                            <ul class="main-menu metismenu">
+                                @foreach (Page Page in ViewBag.Pages)
+                                {
+                                    if (Page.Name == ViewBag.ActivePage)
+                                    {
+                                        <li class="active">
+                                            @if (Page.SubPages.Count > 0)
+                                            {
+                                                <a href="#@Page.Name" class="has-arrow" aria-expanded="true">
+                                                    <i class="icon-users"></i>
+                                                    <span>@Page.Name</span>
+                                                </a>
+                                                <ul aria-expanded="false" class="collapse in">
+                                                    @foreach (SubPage subPage in Page.SubPages)
+                                                    {
+                                                        if (subPage.Name == ViewBag.Action)
+                                                        {
+                                                            <li class="active">
+                                                                <a class="sub_page" asp-action="@subPage.Link" asp-controller="@Page.Link" asp-area="Payroll" asp-route-id="@ViewBag.EmployeeId">
+                                                                    @subPage.Name
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li>
+                                                                <a class="sub_page" asp-action="@subPage.Link" asp-controller="@Page.Link" asp-area="Payroll" asp-route-id="@ViewBag.EmployeeId">
+                                                                    @subPage.Name
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Page.Link">
+                                                    <i class="@Page.Icon"></i>
+                                                    <span>@Page.Name</span>
+                                                </a>
+                                            }
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            @if (Page.SubPages.Count > 0)
+                                            {
+                                                <a href="#Employees" class="has-arrow" aria-expanded="false">
+                                                    <i class="icon-users"></i>
+                                                    <span>@Page.Name</span>
+                                                </a>
+                                                <ul aria-expanded="false" class="collapse">
+                                                    @foreach (SubPage subPage in Page.SubPages)
+                                                    {
+                                                        if (subPage.Name == ViewBag.Action)
+                                                        {
+                                                            <li class="active">
+                                                                <a class="sub_page" asp-action="@subPage.Link" asp-controller="@Page.Link" asp-area="Payroll" asp-route-id="@ViewBag.EmployeeId">
+                                                                    @subPage.Name
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                        else
+                                                        {
+                                                            <li>
+                                                                <a class="sub_page" asp-action="@subPage.Link" asp-controller="@Page.Link" asp-area="Payroll" asp-route-id="@ViewBag.EmployeeId">
+                                                                    @subPage.Name
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Page.Link">
+                                                    <i class="@Page.Icon"></i>
+                                                    <span>@Page.Name</span>
+                                                </a>
+                                            }
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="main-content">
+            <div class="container-fluid">
+                <div class="block-header">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-8 col-sm-12">
+                            <h2>
+                                <a href="javascript:void(0);" class="btn btn-xs btn-link btn-toggle-fullwidth">
+                                    <i class="fas fa-arrow-left"></i>
+                                </a> @ViewBag.Controller
+                            </h2>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><i class="icon-home"></i></li>
+                                <li class="breadcrumb-item active">@ViewBag.Action</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <script src="~/js/libscripts.bundle.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <script src="https://kit.fontawesome.com/7528449088.js"></script>
+    <script src="~/js/datatablescripts.bundle.js"></script>
+    <script src="~/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/js/vendorscripts.bundle.js"></script>
+    <script src="~/js/knob.bundle.js"></script>
+    <script src="~/js/mainscripts.bundle.js"></script>
+    <script src="~/js/jquery-datatable.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+﻿@model ICollection<PayrollModel>
+@{
+    ViewData["Title"] = "Calculate";
+    int counter = 1;
+}
+@foreach (PayrollModel pm in Model)
+{
+    <div class="invoice-mid row">
+        <div class="clientlogo col-1">
+            <img src="~/Employee/Images/@pm.Work.Employee.PhotoLink" alt="user" class="rounded-circle img-fluid">
+        </div>
+        <div class="info col-3">
+            <h6>@pm.Work.Employee.Name @pm.Work.Employee.Surname</h6>
+            <p>@pm.Work.BranchPosition.Position.Name</p>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody class="salary-info">
+                        <tr class="table-success">
+                            <td>@counter</td>
+                            <td>Basic Salary</td>
+                            <td>@decimal.Round(pm.Salary, 2)</td>
+                        </tr>
+                        @if (pm.TotalBonus > 0)
+                        {
+                            <tr class="table-success">
+                                <td>@(++counter)</td>
+                                <td>Bonuses</td>
+                                <td>@decimal.Round(pm.TotalBonus, 2)</td>
+                            </tr>
+                        }
+                        @if (pm.TotalGrade > 0)
+                        {
+                            <tr class="table-success">
+                                <td>@(++counter)</td>
+                                <td>Grade Bonus</td>
+                                <td>@decimal.Round(pm.TotalGrade, 2)</td>
+                            </tr>
+                        }
+                        @if (pm.TotalVacation > 0)
+                        {
+                            <tr class="table-success">
+                                <td>@(++counter)</td>
+                                <td>Vacation Bonus</td>
+                                <td>@decimal.Round(pm.TotalVacation, 2)</td>
+                            </tr>
+                        }
+                        <tr class="table-success">
+                            <td>@(++counter)</td>
+                            <td>Total Bonuses</td>
+                            <td>@decimal.Round((pm.TotalBonus + pm.TotalGrade + pm.TotalVacation), 2)</td>
+                        </tr>
+                        @if (pm.TotalAbsentDay > 0)
+                        {
+                            <tr class="table-danger">
+                                <td>@(++counter)</td>
+                                <td>Total Absent Day</td>
+                                <td>@pm.TotalAbsentDay</td>
+                            </tr>
+                        }
+                        @if (pm.TotalAbsentPenalty > 0)
+                        {
+                            <tr class="table-danger">
+                                <td>@(++counter)</td>
+                                <td>Total Absent Penalty</td>
+                                <td>@decimal.Round(pm.TotalAbsentPenalty, 2)</td>
+                            </tr>
+                        }
+                        @if (pm.TotalPenalties > 0)
+                        {
+                            <tr class="table-danger">
+                                <td>@(++counter)</td>
+                                <td>Penalties</td>
+                                <td>@decimal.Round(pm.TotalPenalties, 2)</td>
+                            </tr>
+                        }
+                        <tr class="table-danger">
+                            <td>@(++counter)</td>
+                            <td>Total Penalties</td>
+                            <td>@decimal.Round((pm.TotalAbsentPenalty + pm.TotalPenalties), 2)</td>
+                        </tr>
+                        <tr>
+                            <td>@(++counter)</td>
+                            <td><b>Total Salary</b></td>
+                            <td><b>@decimal.Round(pm.TotalSalary, 2)</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

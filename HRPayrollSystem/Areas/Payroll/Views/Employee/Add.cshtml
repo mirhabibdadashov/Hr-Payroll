@@ -1,0 +1,93 @@
+﻿@model HRPayrollSystem.Areas.Admin.Models.DataModel.EmployeeModel
+
+@{
+    ViewData["Title"] = "Add";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Name*</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label">Surname*</label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FatherName" class="control-label">Father Name*</label>
+                <input asp-for="FatherName" class="form-control" />
+                <span asp-validation-for="FatherName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label">Birth Date*</label>
+                <input asp-for="BirthDate" type="text" data-provide="datepicker" data-date-autoclose="true" class="datetimepicker form-control">
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label">Address*</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VillageRegister" class="control-label">Village Register*</label>
+                <input asp-for="VillageRegister" class="form-control" />
+                <span asp-validation-for="VillageRegister" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdentityNumber" class="control-label">Identity Number*</label>
+                <input asp-for="IdentityNumber" class="form-control" />
+                <span asp-validation-for="IdentityNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdentityLastDay" class="control-label">Identity Last Day*</label>
+                <input asp-for="IdentityLastDay" type="text" data-provide="datepicker" data-date-autoclose="true" class="datetimepicker form-control" />
+                <span asp-validation-for="IdentityLastDay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Education" class="control-label">Select education type*</label>
+                <select asp-for="Education" class="form-control">
+                    @foreach (Education education in (Education[])Enum.GetValues(typeof(Education)))
+                    {
+                        <option value="@(Convert.ToInt32(education))">@education</option>
+                    }
+                </select>
+                <span asp-validation-for="Education" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FamilyStatus" class="control-label">Select Family Status*</label>
+                <select asp-for="FamilyStatus" class="form-control">
+                    @foreach (FamilyStatus familyStatus in (FamilyStatus[])Enum.GetValues(typeof(FamilyStatus)))
+                    {
+                        <option value="@(Convert.ToInt32(familyStatus))">@familyStatus</option>
+                    }
+                </select>
+                <span asp-validation-for="FamilyStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label">Gender*</label>
+                <select asp-for="Gender" class="form-control">
+                    @foreach (Gender gender in (Gender[])Enum.GetValues(typeof(Gender)))
+                    {
+                        <option value="@(Convert.ToInt32(gender))">@gender</option>
+                    }
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Photo" class="control-label">Select Photo*</label>
+                <input asp-for="Photo" accept="image/*" class="form-control" />
+                <span asp-validation-for="Photo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

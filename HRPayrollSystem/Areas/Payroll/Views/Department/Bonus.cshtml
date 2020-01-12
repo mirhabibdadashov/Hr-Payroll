@@ -1,0 +1,49 @@
+﻿@model BonusModel
+@{
+    ViewData["Title"] = "Bonus";
+}
+<div class="d-flex justify-content-center">
+    <p>
+        <strong>@Model.Employee.Name @Model.Employee.Surname</strong>
+    </p>
+</div>
+<div>
+    <form asp-action="Bonus">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="EmployeeId" type="hidden" class="form-control" value="@Model.Employee.Id" />
+        <div class="form-group">
+            <label asp-for="Price" class="control-label">Price*</label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="GivenDate" class="control-label">Given Date*</label>
+            <input asp-for="GivenDate" type="text" data-provide="datepicker" data-date-autoclose="true" class="datetimepicker form-control" placeholder="GivenDate" value="@DateTime.Now.ToShortDateString()">
+            <span asp-validation-for="GivenDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Given Date</th>
+            <th>Bonus Price</th>
+            <th>Redaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Bonus bonus in Model.Bonuses)
+        {
+            <tr>
+                <td>@bonus.GivenDate</td>
+                <td>@bonus.Price</td>
+                <td>
+                    <a asp-action="EditBonus" asp-controller="Department" asp-route-id="@bonus.Id">Edit</a> / <a  asp-action="DeleteBonus" asp-controller="Department" asp-route-id="@bonus.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

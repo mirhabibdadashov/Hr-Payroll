@@ -1,0 +1,97 @@
+﻿@model BranchModel
+@{
+    ViewData["Title"] = "Branch";
+}
+<div class="d-flex justify-content-center">
+    <p>
+        <strong>Branches</strong>
+    </p>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Branch Name</th>
+            <th>Branch Address</th>
+            <th>Company</th>
+            <th>Redaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Branch branch in Model.Branches)
+        {
+            <tr>
+                <td>
+                    <span class="click-branch-name">@branch.Name</span>
+                    <input type="text" name="name" value="@branch.Name" id="@branch.Id" class="branch-name d-none" />
+                </td>
+                <td>
+                    <span class="click-branch-address">@branch.Address</span>
+                    <input type="text" name="name" value="@branch.Address" id="@branch.Id" class="branch-address d-none" />
+                </td>
+                <td>
+                    <span class="click-branch-company">@branch.Company.Name</span>
+                    <select class="branch-company d-none" id="@branch.Id">
+                        @foreach (Company company in Model.Companies)
+                        {
+                            if (company.Id == branch.CompanyId)
+                            {
+                                <option selected class="@branch.Id" value="@company.Id">@company.Name</option>
+                            }
+                            else
+                            {
+                                <option class="@branch.Id" value="@company.Id">@company.Name</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    <a href="/Payroll/Admin/DeleteBranch/@branch.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td><a href="javascript:void(0);" class="btn btn-info" data-toggle="modal" data-target="#BranchModal"><i class="fas fa-plus-circle"></i>Add New Branch</a></td>
+        </tr>
+    </tbody>
+</table>
+<div class="modal fade" id="BranchModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Branch</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Branch">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label">Name*</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label">Address*</label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CompanyId" class="control-label">Select Company*</label>
+                        <select asp-for="CompanyId">
+                            @foreach (Company company in Model.Companies)
+                            {
+                                <option value="@company.Id">@company.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="CompanyId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

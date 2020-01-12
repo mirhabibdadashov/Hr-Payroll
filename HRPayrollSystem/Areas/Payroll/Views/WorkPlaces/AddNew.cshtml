@@ -1,0 +1,61 @@
+﻿@model WorkModel
+@{
+    ViewData["Title"] = "AddNew";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddNew">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="EmployeeId" type="hidden" class="form-control" value="@Model.EmployeeId">
+            <div class="form-group">
+                <label class="control-label">Employee</label>
+                <span class="form-control">@Model.Employee.Name @Model.Employee.Surname</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Select Holding</label>
+                <select class="form-control holding">
+                    <option></option>
+                    @foreach (Holding holding in Model.Holdings)
+                    {
+                        <option value="@holding.Id">@holding.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Select Company</label>
+                <select class="form-control company"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Select Branch*</label>
+                <select asp-for="BranchId" class="form-control branch"></select>
+                <span asp-validation-for="BranchId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Select Department</label>
+                <select class="form-control department">
+                    <option></option>
+                    @foreach (Department department in Model.Departments)
+                    {
+                        <option value="@department.Id">@department.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PositionId" class="control-label">Select Position*</label>
+                <select asp-for="PositionId" class="form-control position"></select>
+                <span asp-validation-for="PositionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnterTime" class="control-label">Enter Time*</label>
+                <input asp-for="EnterTime" type="text" data-provide="datepicker" data-date-autoclose="true" class="datetimepicker form-control" placeholder="EnterTime">
+                <span asp-validation-for="EnterTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

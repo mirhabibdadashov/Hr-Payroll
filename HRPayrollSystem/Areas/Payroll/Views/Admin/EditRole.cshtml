@@ -1,0 +1,45 @@
+﻿@model UserRoleModel
+@{
+    ViewData["Title"] = "EditRole";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditRole">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="UserId" type="hidden" value="@Model.UserId" />
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label">UserName*</label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email*</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoleName" class="control-label">Select Role*</label>
+                <select asp-for="RoleName">
+                    @foreach (IdentityRole identityRole in Model.Roles)
+                    {
+                        if (identityRole.Name == Model.RoleName)
+                        {
+                            <option selected value="@identityRole.Name">@identityRole.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@identityRole.Name">@identityRole.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

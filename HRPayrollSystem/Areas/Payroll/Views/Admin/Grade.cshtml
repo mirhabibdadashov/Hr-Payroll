@@ -1,0 +1,114 @@
+﻿@model GradeModel
+@using System.Globalization
+@{
+    ViewData["Title"] = "Grade";
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Branch</th>
+            <th>Month</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Bonus</th>
+            <th>Minimum</th>
+            <th>Redaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Grade grade in Model.Grades)
+        {
+            <tr>
+                <td>@grade.Branch.Name</td>
+                <td>@DateTimeFormatInfo.CurrentInfo.GetMonthName(grade.Month)</td>
+                <td>@grade.Year</td>
+                <td>@grade.From</td>
+                <td>@grade.To</td>
+                <td>@grade.Bonus</td>
+                <td>@grade.Cost</td>
+                <td>
+                    <a asp-action="EditGrade" asp-controller="Admin" asp-route-id="@grade.Id">Edit</a> / <a asp-action="DeleteGrade" asp-controller="Admin" asp-route-id="@grade.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td><a href="javascript:void(0);" class="btn btn-info grade" data-toggle="modal" data-target="#GradeModal"><i class="fas fa-plus-circle"></i>Add New Grade</a></td>
+        </tr>
+    </tbody>
+</table>
+<div class="modal fade" id="GradeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Vacation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Grade">
+                    <div class="form-group">
+                        <label class="control-label">Select Branch*</label>
+                        <select asp-for="BranchId">
+                            @foreach (Branch branch in Model.Branches)
+                            {
+                                <option value="@branch.Id">@branch.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="BranchId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Month" class="control-label">Month*</label>
+                        <select asp-for="Month">
+                            @for (int i = 1; i <= 12; i++)
+                            {
+                                if (i == DateTime.Now.Month)
+                                {
+                                    <option selected value="@i">@DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="Month"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Year" class="control-label">Year*</label>
+                        <input asp-for="Year" class="form-control" value="@DateTime.Now.Year">
+                        <span asp-validation-for="Year"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="From" class="control-label">From*</label>
+                        <input asp-for="From" class="form-control">
+                        <span asp-validation-for="From"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="To" class="control-label">To*</label>
+                        <input asp-for="To" class="form-control">
+                        <span asp-validation-for="To"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Bonus" class="control-label">Bonus*</label>
+                        <input asp-for="Bonus" class="form-control" />
+                        <span asp-validation-for="Bonus"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MinimumCost" class="control-label">Select Cost*</label>
+                        <select asp-for="MinimumCost">
+                            @foreach (Cost cost in (Cost[])Enum.GetValues(typeof(Cost)))
+                            {
+                                <option value="@(Convert.ToInt32(cost))">@cost</option>
+                            }
+                        </select>
+                        <span asp-validation-for="MinimumCost"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+﻿@model WorkModel
+@{
+    ViewData["Title"] = "EditNew";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditNew">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" value="@Model.Id" />
+            <div class="form-group">
+                <label class="control-label">Employee</label>
+                <span class="form-control">@Model.Employee.Name @Model.Employee.Surname</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Select Holding</label>
+                <select class="form-control edit-holding">
+                    @foreach (Holding holding in Model.Holdings)
+                    {
+                        if (holding.Id == Model.BranchPosition.Branch.Company.HoldingId)
+                        {
+                            <option selected value="@holding.Id">@holding.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@holding.Id">@holding.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Select Company</label>
+                <select class="form-control edit-company">
+                    <option selected value="@Model.BranchPosition.Branch.Company.Id">
+                        @Model.BranchPosition.Branch.Company.Name
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Select Branch*</label>
+                <select class="form-control edit-branch">
+                    <option selected value="@Model.BranchPosition.Branch.Id">@Model.BranchPosition.Branch.Name</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Select Department*</label>
+                <select class="form-control edit-department">
+                    @foreach (Department department in Model.Departments)
+                    {
+                        if (department.Id == Model.BranchPosition.Position.DepartmentId)
+                        {
+                            <option selected value="@department.Id">@department.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@department.Id">@department.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Select Position*</label>
+                <select asp-for="PositionId" class="form-control  edit-position">
+                    @foreach (BranchPosition branchposition in Model.BranchPositions)
+                    {
+                        if (branchposition.Id == Model.PositionId)
+                        {
+                            <option selected value="@branchposition.PositionId">@branchposition.Position.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@branchposition.PositionId">@branchposition.Position.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnterTime" class="control-label">From*</label>
+                <input asp-for="EnterTime" type="text" data-provide="datepicker" data-date-autoclose="true" class="datetimepicker form-control" placeholder="EnterTime">
+                <span asp-validation-for="EnterTime" class="text-danger"></span>
+            </div>
+            <div class="form-group hidden d-none">
+                <label asp-for="LeaveTime" class="control-label">To*</label>
+                <input asp-for="LeaveTime" type="text" data-provide="datepicker" data-date-autoclose="true" class="datetimepicker form-control" placeholder="LeaveTime">
+                <span asp-validation-for="LeaveTime" class="text-danger"></span>
+            </div>
+            <div class="form-group hidden d-none">
+                <label asp-for="Reason" class="control-label">Reason*</label>
+                <input asp-for="Reason" class="form-control" />
+                <span asp-validation-for="Reason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

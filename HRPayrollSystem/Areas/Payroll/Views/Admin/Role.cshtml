@@ -1,0 +1,40 @@
+﻿@model ICollection<UserRoleModel>
+@{
+    ViewData["Title"] = "Role";
+}
+<table class="table table-hover js-basic-example dataTable table-custom table-striped m-b-0 c_list no-footer" id="employees">
+    <thead class="thead-dark">
+        <tr>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Redation</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (UserRoleModel UserRoleModel in Model)
+        {
+            <tr>
+                <td>@UserRoleModel.User.UserName</td>
+                <td>@UserRoleModel.User.Email</td>
+                <td>@UserRoleModel.Role.Name</td>
+                <td>
+                    <nav>
+                        <ul>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Redaction
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="new" asp-action="EditRole" asp-controller="Admin" asp-route-id="@UserRoleModel.User.Id">Edit</a>
+                                    <br>
+                                    <a class="edit" asp-action="DeleteRole" asp-controller="Admin" asp-route-id="@UserRoleModel.User.Id">Delete</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

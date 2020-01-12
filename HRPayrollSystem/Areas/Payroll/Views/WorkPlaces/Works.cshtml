@@ -1,0 +1,77 @@
+﻿@model WorksModel
+@{
+    ViewData["Title"] = "Index";
+}
+    <div class="d-flex justify-content-center">
+        <p>
+            <strong>@Model.Employee.Name @Model.Employee.Surname</strong>
+            <nav>
+                <ul>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkWork" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Add Work Place
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkWork">
+                            <a asp-action="AddOld" asp-controller="Work" asp-route-id="@Model.Employee.Id">Old Work Place</a>
+                            <br>
+                            <a asp-action="AddNew" asp-controller="Work" asp-route-id="@Model.Employee.Id">New Work Place</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </p>
+    </div>
+    <div style="overflow-x:auto;">
+        @if (Model.OldWorks.Count != 0 || Model.Works.Count != 0)
+        {
+            <table class="works table table-hover js-basic-example dataTable table-custom table-striped m-b-0 c_list no-footer">
+                <thead>
+                    <tr>
+                        <th>HoldingName</th>
+                        <th>CompanyName</th>
+                        <th>BranchName</th>
+                        <th>DepartmentName</th>
+                        <th>PositionName</th>
+                        <th>EnterTIme</th>
+                        <th>LeaveTime</th>
+                        <th>Reason</th>
+                        <th>Redaction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (OldWork ow in Model.OldWorks)
+                    {
+                        <tr>
+                            <td>@ow.HoldingName</td>
+                            <td>@ow.CompanyName</td>
+                            <td>@ow.BranchName</td>
+                            <td>@ow.DepartmentName</td>
+                            <td>@ow.PositionName</td>
+                            <td>@ow.EnterTime.ToShortDateString()</td>
+                            <td>@ow.LeaveTime.ToShortDateString()</td>
+                            <td>@ow.Reason</td>
+                            <td>
+                            <a class="btn btn-default" href="/Payroll/Work/EditOld/@ow.Id">Edit</a> / <a class="btn btn-default" href="/Payroll/Work/DeleteOld/@ow.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                    @foreach (Work w in Model.Works)
+                    {
+                        <tr>
+                            <td>@w.BranchPosition.Branch.Company.Holding.Name</td>
+                            <td>@w.BranchPosition.Branch.Company.Name</td>
+                            <td>@w.BranchPosition.Branch.Name</td>
+                            <td>@w.BranchPosition.Position.Department.Name</td>
+                            <td>@w.BranchPosition.Position.Name</td>
+                            <td>@w.EnterTime.ToShortDateString()</td>
+                            <td>@(w.LeaveTime != null ? Convert.ToDateTime(w.LeaveTime).ToShortDateString() : "Still work")</td>
+                            <td>@(w.Reason != null ? w.Reason : "")</td>
+                            <td>
+                                <a class="btn btn-default" href="/Payroll/Work/EditNew/@w.Id">Edit</a> / <a class="btn btn-default" href="/Payroll/Work/DeleteNew/@w.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>

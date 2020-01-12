@@ -1,0 +1,52 @@
+﻿@{
+    Layout = null;
+}
+@model LoginModel
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Login page</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="description" content="Lucid Bootstrap 4x Admin Template">
+    <meta name="author" content="WrapTheme, design by: ThemeMakker.com">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/color_skins.css">
+</head>
+<body class="theme-orange">
+    <div id="wrapper">
+        <div class="vertical-align-wrap">
+            <div class="vertical-align-middle auth-main">
+                <div class="auth-box">
+                    <div class="card">
+                        <div class="header">
+                            <p class="lead">Login to your account</p>
+                        </div>
+                        <div class="body">
+                            <div asp-validation-summary="ModelOnly"></div>
+                            <form action="@Url.Action("Login","Account")" asp-antiforgery="true" class="form-auth-small" method="post">
+                                <div class="form-group">
+                                    <label asp-for="Email"></label>
+                                    <input type="email" name="Email" class="form-control" id="email" placeholder="Email">
+                                    <span asp-validation-for="Email"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Password">Password</label>
+                                    <input type="password" name="Password" class="form-control" id="password" placeholder="Password">
+                                    <span asp-validation-for="Password"></span>
+                                </div>
+                                <input type="submit" class="btn btn-primary btn-lg btn-block" value="Login">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

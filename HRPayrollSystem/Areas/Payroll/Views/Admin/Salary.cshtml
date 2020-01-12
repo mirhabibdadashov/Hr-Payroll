@@ -1,0 +1,59 @@
+﻿@model SalaryModel
+@{
+    ViewData["Title"] = "Salary";
+}
+<div class="d-flex justify-content-center">
+    <p>
+        <strong>Salaries</strong>
+    </p>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Salary Price</th>
+            <th>Redaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Salary salary in Model.Salaries)
+        {
+            <tr>
+                <td>
+                    <span class="click-salary-price">@salary.Price</span>
+                    <input type="text" name="name" value="@salary.Price" id="@salary.Id" class="click-salary-price d-none"/>
+                </td>
+                <td>
+                    <a href="/Payroll/Admin/DeleteSalary/@salary.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td><a href="javascript:void(0);" class="btn btn-info" data-toggle="modal" data-target="#SalaryModal"><i class="fas fa-plus-circle"></i>Add New Salary</a></td>
+        </tr>
+    </tbody>
+</table>
+<div class="modal fade" id="SalaryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Salary</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Salary">
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label">Price*</label>
+                        <input asp-for="Price" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

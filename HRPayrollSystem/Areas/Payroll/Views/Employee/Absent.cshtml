@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "Attendance";
+}
+@using System.Globalization
+@model AbsentModel
+<form asp-action="Absent">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="form-group col-2 permission_role">
+            <label asp-for="EmployeeId" class="control-label">Select Employee*</label>
+            <select asp-for="EmployeeId" class="form-control">
+                @foreach (Employee employee in Model.Employees)
+                {
+                    <option value="@employee.Id">@employee.Name @employee.Surname</option>
+                }
+            </select>
+            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-2">
+            <label asp-for="From" class="control-label">From*</label>
+            <input asp-for="From" type="text" data-provide="datepicker" data-date-autoclose="true" class="datetimepicker form-control" placeholder="From" value="@DateTime.Now.ToShortDateString()">
+            <span asp-validation-for="From" class="text-danger"></span>
+        </div>
+        <div class="form-group col-2">
+            <label asp-for="To" class="control-label">To*</label>
+            <input asp-for="To" type="text" data-provide="datepicker" data-date-autoclose="true" class="datetimepicker form-control" placeholder="To" value="@DateTime.Now.ToShortDateString()">
+            <span asp-validation-for="To" class="text-danger"></span>
+        </div>
+        <div class="form-group col-2 permission_role">
+            <label asp-for="PermissionRole" class="control-label">Is Permissible?*</label>
+            <select asp-for="PermissionRole" class="form-control">
+                <option value="1">Yes(Permissible)</option>
+                <option value="0">No(Not Pormissible)</option>
+            </select>
+            <span asp-validation-for="PermissionRole" class="text-danger"></span>
+        </div>
+        <div class="form-group col-2">
+            <label asp-for="Reason" class="control-label">Reason*</label>
+            <input asp-for="Reason" class="form-control" />
+            <span asp-validation-for="Reason" class="text-danger"></span>
+        </div>
+        <div class="form-group col-2">
+            <input type="submit" value="Create" class="btn btn-default mt-4 ml-3" />
+        </div>
+    </div>
+</form>
+<div>
+    <select class="months">
+        @for (int i = 1; i <= 12; i++)
+        {
+            if (i == Model.LastCheckDate.Month)
+            {
+                <option selected value="@i">@DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</option>
+            }
+            else
+            {
+                <option value="@i">@DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</option>
+            }
+        }
+    </select>
+</div>
+<div style="overflow-x:auto;">
+    <table class="table table-hover attendance_list">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                @for (int i = 1; i <= DateTime.DaysInMonth(Model.LastCheckDate.Year, Model.LastCheckDate.Month); i++)
+                {
+                    <th>@i</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Employee employee in Model.Employees)
+            {
+                <tr class="@employee.Name">
+                    <td>@employee.Name @employee.Surname</td>
+                    @for (int i = 1; i <= DateTime.DaysInMonth(Model.LastCheckDate.Year, Model.LastCheckDate.Month); i++)
+                    {
+                        string IconClassName = null;
+                        if (i <= Model.LastCheckDate.Day)
+                        {
+                            Absent absent = Model.Absents.Where(wc => wc.From.Day == i && wc.EmployeeId == employee.Id).FirstOrDefault();
+                            if (absent != null)
+                            {
+                                IconClassName = "icon-close";
+                                for (int j = i; j < absent.To.Day; j++)
+                                {
+                                    if (absent.PermissionRole == PermissionRole.NotPermission)
+                                    {
+                                        <td class="table-danger"><i class="@IconClassName"></i></td>
+                                    }
+                                    else
+                                    {
+                                        <td class="table-warning"><i class="@IconClassName"></i></td>
+                                    }
+                                    i++;
+                                }
+                                i--;
+                            }
+                            else
+                            {
+                                IconClassName = "icon-check";
+                                <td class="table-success"><i class="@IconClassName"></i></td>
+                            }
+                        }
+                        else
+                        {
+                            <td>-</td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

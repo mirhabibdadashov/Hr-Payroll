@@ -1,0 +1,111 @@
+﻿@model PositionModel
+@{
+    ViewData["Title"] = "Position";
+}
+<div class="d-flex justify-content-center">
+    <p>
+        <strong>Positions</strong>
+    </p>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Position Name</th>
+            <th>Position Salary</th>
+            <th>Department</th>
+            <th>Redaction</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Position position in Model.Positions)
+        {
+            <tr>
+                <td>
+                    <span class="click-position-name">@position.Name</span>
+                    <input type="text" name="name" value="@position.Name" id="@position.Id" class="position-name d-none" />
+                </td>
+                <td>
+                    <span class="click-position-salary">@position.Salary.Price</span>
+                    <select class="position-salary d-none" id="@position.Id">
+                        @foreach (Salary salary in Model.Salaries)
+                        {
+                            if (position.Salary.Price == salary.Price)
+                            {
+                                <option class="@salary.Id" selected value="@salary.Id">@salary.Price</option>
+                            }
+                            else
+                            {
+                                <option class="@salary.Id" value="@salary.Id">@salary.Price</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    <span class="click-position-department">@position.Department.Name</span>
+                    <select class="position-department d-none" id="@position.Id">
+                        @foreach (Department department in Model.Departments)
+                        {
+                            if (position.DepartmentId == department.Id)
+                            {
+                                <option class="@position.Id" selected value="@department.Id">@department.Name</option>
+                            }
+                            else
+                            {
+                                <option class="@position.Id" value="@department.Id">@department.Name</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    <a href="/Payroll/Admin/DeletePosition/@position.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td><a href="javascript:void(0);" class="btn btn-info" data-toggle="modal" data-target="#PositionModal"><i class="fas fa-plus-circle"></i>Add New Position</a></td>
+        </tr>
+    </tbody>
+</table>
+<div class="modal fade" id="PositionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Positio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Position">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label">Name*</label>
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SalaryId" class="control-label">Select Salary*</label>
+                        <select asp-for="SalaryId">
+                            @foreach (Salary salary in Model.Salaries)
+                            {
+                                <option value="@salary.Id">@salary.Price</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DepartmentId" class="control-label">Select Department*</label>
+                        <select asp-for="DepartmentId">
+                            @foreach (Department department in Model.Departments)
+                            {
+                                <option value="@department.Id">@department.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
